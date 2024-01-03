@@ -56,6 +56,7 @@ public:
     string get_finish_time() { return finish_time.get_time(); }
 
     string get_direction() { return passenger_direction; }
+    string get_description() { return passenger_description; }
 
     /*int getTripHours() const {
         return trip_hours;
