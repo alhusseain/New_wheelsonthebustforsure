@@ -187,6 +187,84 @@ public:
 	{
 
 	}*/
+	void prioritizesp(Queue<passengers>* sp) {
+		Queue<passengers>* aged = new Queue<passengers>;
+		Queue<passengers>* POD = new Queue<passengers>;
+		Queue<passengers>* Pregnant = new Queue<passengers>;
+
+		int size = sp->get_count();
+
+		for (int i = 0; i < size; i++) {
+			passengers temp = sp->dequeue();
+			if (temp.get_description() == "aged")
+				aged->enqueue(temp);
+			else if (temp.get_description() == "POD")
+				POD->enqueue(temp);
+			else if (temp.get_description() == "Pregnant")
+				Pregnant->enqueue(temp);
+		}
+
+		// Prioritize by enqueuing back to sp in the desired order
+		int agedCount = aged->get_count();
+		for (int i = 0; i < agedCount; i++) {
+			passengers temppass = aged->dequeue();
+			sp->enqueue(temppass);
+		}
+
+		int podCount = POD->get_count();
+		for (int i = 0; i < podCount; i++) {
+			passengers tempn2 = POD->dequeue();
+			sp->enqueue(tempn2);
+		}
+
+		int pregCount = Pregnant->get_count();
+		for (int i = 0; i < pregCount; i++) {
+			passengers tempn2 = Pregnant->dequeue();
+			sp->enqueue(tempn2);
+		}
+
+		// Don't forget to delete the temporary queues to avoid memory leaks
+		delete aged;
+		delete POD;
+		delete Pregnant;
+	}
+ 
+
+
+	
+	void prioritizequeue(Queue<passengers>* rateb){
+		Queue<passengers>* zeros=new Queue<passengers>; Queue<passengers>* ones = new Queue < passengers>;
+		int size = rateb->get_count();
+		
+		
+		for (int i=0; i < size; i++) {
+			passengers temp = rateb->dequeue();
+			if (temp.getPriorityNo() == 0) zeros->enqueue(temp);
+			else if (temp.getPriorityNo() == 1) {
+				ones->enqueue(temp);
+				
+			}
+		}
+		prioritizesp(zeros);
+		
+		int onescount = ones->get_count();
+		for (int i = 0; i < onescount; i++) {
+			passengers temppass = ones->dequeue();
+			rateb->enqueue(temppass);
+			
+			}
+		
+		int zeroscount = zeros->get_count();
+		for (int i=0; i < zeroscount; i++) {
+			passengers tempn2 = zeros->dequeue();
+			 
+			rateb->enqueue(tempn2);
+		
+			
+	   }
+		
+	}
+
 
 	void display_waiting_passengers()
 	{
@@ -206,7 +284,9 @@ public:
 			{
 				cout << "##################################### STATION " << j + 1 << " ####################################################" << endl << endl;
 				Stations test_station = stations_list.get_value(j);
+
 				Queue<passengers>* current_waiting_passengers = test_station.getWaitingPassengers();
+				prioritizequeue(current_waiting_passengers);
 				Queue<passengers>* current_WP_waiting_passengers = test_station.get_WP_WaitingPassengers();
 				int counter = current_waiting_passengers->get_count();
 				int WP_counter = current_WP_waiting_passengers->get_count();
@@ -223,6 +303,8 @@ public:
 						cout << " Direction : " << person.get_direction() << endl;
 						cout << " Passenger Type:" << person.getPassengerType() << endl;
 						cout << " Priority Num: " << person.getPriorityNo() << endl;
+						cout << person.get_description();
+						
 					}
 				}
 				
