@@ -92,7 +92,18 @@ public:
         else return false;
     }
 
-    int get_count() { return count; }
+    
+    int get_count() const {
+        int count = 0;
+        Node<k>* current = head;
+
+        while (current != nullptr) {
+            count++;
+            current = current->get_next();
+        }
+
+        return count;
+    }
     // if only one parameter is input, by default will append. Else, will insert at specified position
     void insert(k value)
     {
