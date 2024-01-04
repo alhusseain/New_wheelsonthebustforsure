@@ -9,6 +9,7 @@ private:
 	int  nextStation;
 	Queue<passengers>* waiting_passengers;
 	Queue<passengers>* WP_waitingPassengers;
+	Queue<passengers>* we_waited_too_long_boi;
 
 
 public:
@@ -18,6 +19,7 @@ public:
 		nextStation = NULL;
 		waiting_passengers = new Queue<passengers>;
 		WP_waitingPassengers = new Queue<passengers>;
+		we_waited_too_long_boi = new Queue<passengers>;
 	}
 	// Constructor
 	/*Stations(int stationNo, int nextSt)
@@ -41,7 +43,9 @@ public:
 	Queue<passengers>* getWaitingPassengers() {
 		return waiting_passengers;
 	}
-
+	Queue<passengers>* getWe_waited_too_long() {
+		return we_waited_too_long_boi;
+	}
 	Queue<passengers>* get_WP_WaitingPassengers() {
 		return WP_waitingPassengers;
 	}
