@@ -52,6 +52,7 @@ public:
     }
 
     string get_arrival_time() { return arrival_time.get_time(); }
+    time_def get_arrival_time_def() { return arrival_time; }
 
     string get_finish_time() { return finish_time.get_time(); }
 
