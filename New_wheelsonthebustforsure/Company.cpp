@@ -234,15 +234,17 @@ public:
 	
 	void prioritizequeue(Queue<passengers>* rateb){
 		Queue<passengers>* zeros=new Queue<passengers>; Queue<passengers>* ones = new Queue < passengers>;
+
+		
 		int size = rateb->get_count();
 		
 		
-		for (int i=0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			passengers temp = rateb->dequeue();
 			if (temp.getPriorityNo() == 0) zeros->enqueue(temp);
 			else if (temp.getPriorityNo() == 1) {
 				ones->enqueue(temp);
-				
+
 			}
 		}
 		prioritizesp(zeros);
@@ -264,7 +266,34 @@ public:
 	   }
 		
 	}
+	void get_wait_too_long_in_thier_list_to_get_out(time_def ct, Stations station) {
+		Queue<passengers>* rateb = station.getWaitingPassengers();
+		int size = rateb->get_count();
+		
+		Queue<passengers>* holders = new Queue<passengers>;
+		for (int i = 0; i < size; i++) {
+			passengers temp = rateb->dequeue();
+			time_def arrivaltime = temp.get_arrival_time_def();
+			int differnce = ct.convert_all_to_min() - arrivaltime.convert_all_to_min();
+			if (differnce > maxW && temp.getPassengerType()=="NP") {
+				station.getWe_waited_too_long()->enqueue(temp);
+			}
+			else
+			{
+				holders->enqueue(temp);
+			}
 
+			}
+		int remaining = holders->get_count();
+		for (int i = 0; i < remaining; i++) {
+			passengers temppass = holders->dequeue();
+			rateb->enqueue(temppass);
+
+		}
+
+
+		}
+		
 
 	void display_waiting_passengers()
 	{
@@ -286,7 +315,12 @@ public:
 				Stations test_station = stations_list.get_value(j);
 
 				Queue<passengers>* current_waiting_passengers = test_station.getWaitingPassengers();
+				Queue<passengers>* passenger_that_got_fed_up = test_station.getWe_waited_too_long();
 				prioritizequeue(current_waiting_passengers);
+				time_def current_time;//to be handled when we have a simulator
+
+				get_wait_too_long_in_thier_list_to_get_out(compared_time, test_station);
+				
 				Queue<passengers>* current_WP_waiting_passengers = test_station.get_WP_WaitingPassengers();
 				int counter = current_waiting_passengers->get_count();
 				int WP_counter = current_WP_waiting_passengers->get_count();
@@ -305,9 +339,11 @@ public:
 						cout << " Priority Num: " << person.getPriorityNo() << endl;
 						cout << person.get_description();
 						
+						
+						
 					}
 				}
-				
+
 				for (int i = 0; i < WP_counter; i++)
 				{
 					passengers wp_person = current_WP_waiting_passengers->dequeue();
