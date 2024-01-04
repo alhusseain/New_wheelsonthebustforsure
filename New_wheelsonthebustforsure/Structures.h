@@ -74,7 +74,7 @@ public:
         Node<t>* new_element = new Node<t>(NULL);
         head=new_element
     }*/
-
+    
     void set_size(int number)
     {
         Size = number;
@@ -368,6 +368,7 @@ public:
     }
 
 
+
 };
 
 
@@ -416,7 +417,7 @@ public:
             linked_queue.insert(value, linked_queue.get_priority_index(),priority);
         }
     }
-
+   
     j dequeue()
     {
         if (linked_queue.is_empty()) cout << " The queue is already empty!!";
@@ -429,38 +430,13 @@ public:
             return value;
         }
     }
+    
     void display_all()
     {
         linked_queue.display_all();
     }
 
 };
-/*int main()
-{
-    Linked_List<int> test(9);
-    test.insert(7);
-    test.insert(8);
-    test.insert(9);
-    test.insert(1);
-    test.set_value(3, 2);
-    test.insert(4, 2);
-    test.display_all();
 
-    Queue<int> test(9);
-    test.enqueue(1);
-    test.enqueue(9);
-    test.enqueue(8);
-    test.enqueue(7);
-    cout << test.dequeue()<<" ";
-    cout << test.dequeue()<<" ";
-    cout << test.dequeue() << " ";
-    cout << test.dequeue() << " ";
-    cout << test.dequeue() << " ";
-    cout << test.dequeue() << " ";
-    cout << test.dequeue() << " ";
-    cout << test.dequeue() << " ";
-    return 0;
-}
-*/
 
 #endif // !DATASTRUCTURES
