@@ -2,9 +2,10 @@
 #include<fstream>
 #include<string>
 #include"passengers.h"
-#include"station.h"
+//#include"station.h"
 #include"Events.cpp"
 #include"Structures.h"
+#include"Time_simulator.cpp"
 using namespace std;
 class company
 {
@@ -33,8 +34,9 @@ private:
 	Queue<Arrival_event> A_events_list;
 	Queue<Leave_event> L_events_list;
 	Linked_List<Stations> stations_list;
-
-
+	Stations station0;
+	int initial_diff;
+	bool m_w_choice;
 
 public:
 	company()
@@ -48,6 +50,8 @@ public:
 		randomizer >> E;
 		event_types = new char[E];
 		stations_list.create_array(S);
+		initial_diff = 255;
+		m_w_choice = false;
 
 
 		//*****************************************************************************************************************************************************
@@ -91,15 +95,29 @@ public:
 
 		}
 
-
-
 		//----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//**********************************************************************************************************************************************************
+
+		//FILLING BUSSES STATION 0 ---------------------------------------------------------------------------------------------------------------------------------
+
+		for (int i = 0;i<MBus_count;i++)
+		{
+			bus* ptr = new bus(MBus_capacity);
+			station0.board_bus(ptr);
+
+		}
+
+		for (int i = 0; i < WBus_count; i++)
+		{
+			bus* ptr = new bus(WBus_capacity);
+			station0.board_wp_bus(ptr);
+
+		}
+
 
 		for (int i = 0; i < E; i++)
 		{
-
-
-
 			if (event_types[i] == 'A')
 			{
 				Arrival_event to_execute = A_events_list.dequeue();
@@ -115,10 +133,6 @@ public:
 				Stations*  current_station = stations_list.get_value(index);
 				to_execute_leave.execute(current_station);
 			}*/
-
-
-
-
 		}
 
 
@@ -265,6 +279,11 @@ public:
 		
 	}
 
+	Stations* get_station_ptr(int index)
+	{
+		return stations_list.get_value_pointer(index);
+	}
+
 
 	void display_waiting_passengers()
 	{
@@ -326,7 +345,36 @@ public:
 		}
 		
 	}
-	
+
+	void release_bus(time_def current_time)
+	{
+		int current_minutes = current_time.convert_all_to_min();
+		if (abs(current_minutes - initial_diff) == 15)
+		{
+			if (m_w_choice && station0.get_boarded_count()!=0)
+			{
+				m_w_choice = false;
+
+				bus* current_bus = station0.release_bus();
+				//stations_list.get_value_pointer(index);
+			}
+
+		}
+
+	}
+
+
+	void simulate()
+	{
+		time_def last_time("22:00");
+		simulator simulate;
+		while (simulate.get_time_def() != last_time) {
+			simulate.plus_one();
+			cout << simulate.get_current_time() << endl;
+			Sleep(900);
+			system("cls");
+		}
+	}
 	Queue<Arrival_event> get_arrival_event_list()
 	{
 		return A_events_list;
